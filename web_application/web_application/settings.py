@@ -1,9 +1,10 @@
 import os
 from pymongo import MongoClient
+from datetime import timedelta
 
 MONGO_URI = "mongodb://localhost:27017/"
 MONGO_CLIENT = MongoClient(MONGO_URI)
-DATABASE = MONGO_CLIENT["web-application"]
+DATABASE = MONGO_CLIENT["web_application"]
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -11,7 +12,7 @@ SECRET_KEY = 'w1z8wio*^2yt&*(0#vwl5us3947+4)zjz800b#()i5rkl5tsu('
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -22,9 +23,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'web_api',
     'rest_framework',
+    'rest_framework_simplejwt',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -35,6 +39,10 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'web_application.urls'
+
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 TEMPLATES = [
     {
@@ -54,14 +62,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'web_application.wsgi.application'
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -95,3 +101,4 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+
